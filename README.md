@@ -12,15 +12,13 @@
 
 **邮件：** ***myrawaters@gmail.com***
 
+**Python版本：** 3.8.5
+
+**用到的Python库：** lxml-4.6.2	requests-2.25.1	bs4-0.0.1
+
 ## 2、功能
 
 **将豆瓣的电影评论以多种方式可视化**
-
-## 3、用到的Python库
-
-* lxml-4.6.2
-* requests-2.25.1
-* bs4-0.0.1
 
 ## 3、程序结构
 

@@ -17,15 +17,23 @@ def get_reviews(all_reviews_url_str, num_analysis_int):
     serve_url_str = all_reviews_url_str.split('?')
     # print(type(serve_url_str))
     # print(serve_url_str)
-    req = requests.get(url=all_reviews_url_str)
+    # 设置请求头
+    headers = {'User-Agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0"}
+    req = requests.get(url=all_reviews_url_str, headers=headers)
     # print(req)
     html_str = req.text
     # print(type(html_str))
     # print(html_str)
     bs = BeautifulSoup(html_str, 'lxml')
     # 获取本页所有评论
-    comment_content_list = bs.find_all('div', class_='comment-item')
-    print(len(comment_content_list))
+    comment_item_list = bs.find_all('div', class_="comment-item")
+    # print(len(comment_content_list))
+    for comment_item in comment_item_list:
+        # html_div_str = comment_item.text
+        # print(comment_item)
+        bs_div = BeautifulSoup(str(comment_item), 'lxml')
+        comment_content_list = bs_div.find_all('p', class_='comment-content')
+        print(len(comment_content_list))
 
 
 if __name__ == '__main__':

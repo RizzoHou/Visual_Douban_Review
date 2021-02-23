@@ -14,7 +14,7 @@
 
 **Python版本：** 3.8.5
 
-**用到的Python库：** lxml-4.6.2	requests-2.25.1	bs4-0.0.1
+**用到的Python库：** lxml-4.6.2	requests-2.25.1	bs4-0.0.1 zhon-1.1.5
 
 ## 2、功能
 

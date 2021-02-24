@@ -14,7 +14,7 @@
 
 **Python版本：** 3.8.5
 
-**用到的Python库：** lxml-4.6.2	requests-2.25.1	bs4-0.0.1 zhon-1.1.5
+**用到的Python库：** lxml-4.6.2	requests-2.25.1	bs4-0.0.1 zhon-1.1.5	wordcloud-1.8.1	jieba-0.42.1
 
 ## 2、功能
 
@@ -34,4 +34,7 @@
   * 组织
 * **get_reviews.py**
   * 内容：一个定量获取豆瓣电影评论的***函数***
+  * 组织
+* **visual.py**
+  * 内容：可视化数据
   * 组织

@@ -5,7 +5,7 @@ from wordcloud import WordCloud
 import jieba
 import numpy as np
 import PIL.Image as Image
-from get_reviews import get_reviews
+from get_reviews import get_reviews, grab_data
 
 
 def chinese_jieba(text_str):
@@ -26,7 +26,7 @@ def word_cloud(text_str, path_png_str, path_font_str, png_name_str):
                         background_color="white",#设置背景颜色
                         max_font_size=150,# 设置字体最大值
                         max_words=2000, # 设置最大显示的字数
-                        stopwords={'Python'}, #设置停用词，停用词则不再词云图中表示
+                        stopwords={'流浪地球', '星际穿越'}, #设置停用词，停用词则不再词云图中表示
                         ).generate(text_str)
     image=wordcloud.to_image()
     wordcloud.to_file(png_name_str)
@@ -34,5 +34,5 @@ def word_cloud(text_str, path_png_str, path_font_str, png_name_str):
 
 
 if __name__ == '__main__':
-    m_reviews_str = get_reviews('https://movie.douban.com/subject/34841067/comments?limit=20&status=P&sort=new_score', 1)
-    word_cloud(m_reviews_str, 'china.png', 'A:\字体\明月九连天\AaMingYueJiuLinTian-2.ttf', 'text01.png')
+    m_reviews_str = grab_data('流浪地球_reviews.txt')
+    word_cloud(m_reviews_str, 'china.png', 'A:\字体\明月九连天\AaMingYueJiuLinTian-2.ttf', 'visual_text02.png')

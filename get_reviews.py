@@ -80,15 +80,14 @@ def get_next_url(now_url_str, serve_url_str):
             print('get_next_url:\n\tERROR 豆瓣可能启动了反爬虫机制，请稍后重试(检测到有异常请求从你的 IP 发出，请 登录 使用豆瓣)')
         else:
             r_url_str = serve_url_str + href_str
-            # print(r_url_str)
+            print('get_next_url:\n\t下一页评论的网址为', r_url_str)
             print('get_next_url:DONE')
             return r_url_str
 
 
-def get_reviews(all_reviews_url_str, num_pages_int=10):
+def get_reviews(all_reviews_url_str):
     # 功能：一个定页获取豆瓣电影评论的函数
     # 形参：all_reviews_url_str[str]:豆瓣上电影全部评论的http网址
-    # 形参：num_analysis_int[int]:用户想分析的评论页数，默认为10页
     # 返回：r_reviews_str[str]：定页获取的豆瓣电影评论
     # 得到评论网址的共同url，可用于获取下一页评论
     serve_url_str = all_reviews_url_str.split('?')[0]
@@ -96,12 +95,13 @@ def get_reviews(all_reviews_url_str, num_pages_int=10):
     # print(serve_url_str)
     r_reviews_str = ''
     reviews_int = 0
-    while reviews_int < num_pages_int:
+    while True:
         # 获取定页评论
         print('【第', str(reviews_int + 1), '页】')
         page_reviews_str = get_one_page_reviews(all_reviews_url_str)
         if page_reviews_str == '':
-            print('get_reviews:\n\tWARMING get_one_page_reviews获取的评论为空')
+            print('get_reviews:\n\tWARMING get_one_page_reviews获取的评论为空，豆瓣以启动反爬虫机制，因此退出获取评论')
+            break
         else:
             r_reviews_str += ('。' + page_reviews_str)
         reviews_int += 1
@@ -135,8 +135,27 @@ def grab_data(file_name_str):
     return pickle.load(f_rb)
 
 
+def get_film_name(film_url_str):
+    """
+    功能：得到电影名
+    形参：film_name_str[str]:电影的豆瓣网址
+    返回：r_span[0].text[str]:电影名
+    """
+    headers = {
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0",
+        "Cookie":'ll=\"118107\"; bid=YRJOR56eDnk; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1614221246%2C%22https%3A%2F%2Fwww.google.com%2F%22%5D; _pk_id.100001.4cf6=ee0434555991a45d.1613965221.6.1614221319.1614173342.; __yadk_uid=0qkh9dVocHMuKUH5EfGBZn8sBtDdpuM9; __utma=30149280.366239636.1613965227.1614171693.1614221248.6; __utmz=30149280.1613965227.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utma=223695111.1958921639.1613965227.1614171693.1614221248.6; __utmz=223695111.1613965227.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmc=30149280; __utmc=223695111; _vwo_uuid_v2=D57AF3132E92C23D63349916F5291B452|7d0661bf33a74ef82b6131c2e309ff8c',
+    }
+    time.sleep(10)
+    req = requests.get(url=film_url_str, headers=headers)
+    html = req.text
+    bs = BeautifulSoup(html, 'lxml')
+    r_span = bs.find_all('span', property="v:itemreviewed")
+    print('get_film_name:\n\t此电影名为', r_span[0].text)
+    print('get_film_name:DONE')
+    return r_span[0].text
+
+
 if __name__ == '__main__':
     m_reviews_str = get_reviews('https://movie.douban.com/subject/26266893/comments?sort=new_score&status=P')
     # print(m_reviews_str)
-    store_data(m_reviews_str, '流浪地球_reviews.txt')
     print('\nAll done')

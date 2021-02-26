@@ -33,10 +33,16 @@ def main():
     png_name_str = 'PNG\\' + 'word_cloud_' + film_name_str + '.png'
     path_font_str = '字体\\AaMingYueJiuLinTian-2.ttf'
     path_png_str = 'PNG\\' + path_png_str
-    word_cloud(
-        reviews_str, path_png_str, path_font_str,
-        png_name_str, stop_words=stop_words, scale_int=scale_int,
-    )
+    try:
+        word_cloud(
+            reviews_str, path_png_str, path_font_str,
+            png_name_str, stop_words=stop_words, scale_int=scale_int,
+        )
+    except MemoryError:
+        print('Visual_Douban_Review/main:\n\tMemoryError\t可能是因为您所选的PNG图片文件较大，造成内存溢出，程序将重新运行。评论二进制文件已经生成，文件名为', grab_fn_str.split('\\')[-1], '，请直接选择加载评论二进制文件，并选择一个较小的PNG文件')
+        main()
+    else:
+        print('Visual_Douban_Review/main:DONE')
 
 
 if __name__ == '__main__':
